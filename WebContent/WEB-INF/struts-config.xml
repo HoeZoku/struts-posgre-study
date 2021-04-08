@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- ISO-8859-1でえらーでたのでUTFに変更 -->
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN"
+          "http://jakarta.apache.org/struts/dtds/struts-config_1_2.dtd">
+
+<struts-config>
+<!-- 必要なさそうなものは消した。DataSourceはStrutsにかくのはもう古いみたい -->
+<!-- ================================================ Form Bean Definitions -->
+
+    <!-- アクション・フォームBeanの指定 -->
+    <form-beans>
+
+        <form-bean
+                    name="LoginBean"
+                    type="bean.LoginBean"/>
+
+		<!-- データ受け渡し用 -->
+         <form-bean
+                    name="MemberBean"
+                    type="bean.MemberBean"/>
+
+		<!-- 入力受付用 -->
+         <form-bean
+                    name="ValidatorMmberBean"
+                    type="bean.ValidatorMmberBean"/>
+
+    </form-beans>
+
+<!-- =========================================== Action Mapping Definitions -->
+
+    <action-mappings>
+		<!-- アクションからアクション -->
+		<!-- Validatorを使用する場合validate属性をtrueに指定。
+             Validatorのエラーを表示する画面をinput属性で指定。 -->
+        <action path="/login"
+                    type="main.LoginAction"
+                    name="LoginBean"
+                    scope="request"
+                    validate="true"
+                    input="/index.jsp">
+            <forward name="success" path="/start.do"/>
+        </action>
+
+        <action path="/start"
+                    type="main.StartAction"
+                    name="MemberBean"
+                    scope="request">
+            <forward name="success" path="/WEB-INF/page/memberList.jsp"/>
+        </action>
+
+		<!-- ActionやBeanが必要なく遷移だけさせる書き方-->
+		<action path="/goInsert"
+					type = "org.apache.struts.actions.ForwardAction"
+					parameter = "/WEB-INF/page/memberInsert.jsp" />
+
+
+		<!-- アクションからアクション -->
+        <action path="/insert"
+                    type="main.InsertAction"
+                    name="MemberBean"
+                    scope="request">
+            <forward name="success" path="/start.do"/>
+        </action>
+
+        <action path="/deleteCheck"
+                    type="main.DeleteCheckAction"
+                    name="MemberBean"
+                    scope="request">
+            <forward name="success" path="/WEB-INF/page/memberDelete.jsp"/>
+        </action>
+
+        <action path="/delete"
+                    type="main.DeleteAction"
+                    name="MemberBean"
+                    scope="request">
+            <forward name="success" path="/WEB-INF/page/resultOK.jsp"/>
+        </action>
+
+        <action path="/updateCheck"
+                    type="main.UpdateCheckAction"
+                    name="MemberBean"
+                    scope="request">
+            <forward name="success" path="/WEB-INF/page/memberUpdate.jsp"/>
+        </action>
+
+        <action path="/update"
+                    type="main.UpdateAction"
+                    name="MemberBean"
+                    scope="request">
+            <forward name="success" path="/WEB-INF/page/resultOK.jsp"/>
+        </action>
+
+    </action-mappings>
+
+<!-- ======================================== Message Resources Definitions -->
+
+    <message-resources parameter="MessageResources" />
+
+  <!-- =================================================== Validator plugin -->
+
+  <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+    <set-property
+        property="pathnames"
+        value="/WEB-INF/validator-rules.xml,/WEB-INF/validation.xml"/>
+  </plug-in>
+
+</struts-config>
