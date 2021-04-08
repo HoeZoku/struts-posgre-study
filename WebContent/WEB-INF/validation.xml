@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE form-validation PUBLIC
+          "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1.3//EN"
+          "http://jakarta.apache.org/commons/dtds/validator_1_1_3.dtd">
+
+<form-validation>
+	<formset>
+
+		<!-- フォーム(Bean)名 -->
+		<form name="LoginBean">
+
+			<!--id -->
+			<field property="id" depends="required,mask,validwhen">
+				<!-- 動的な表示を設定する。プロパティファイルの{0}に対応 -->
+				<arg0 key="field.id" />
+				<!-- IDはint初期値０のせいで必須入力ひっかからない?ので↓ -->
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						((*this* != null) and (*this* != 0))
+					</var-value>
+				</var>
+				<var>
+					<var-name>mask</var-name>
+					<var-value>^[0-9]+$</var-value>
+				</var>
+			</field>
+			<!--pass -->
+			<field property="pass" depends="required">
+				<arg key="field.pass" />
+			</field>
+
+		</form>
+
+	</formset>
+</form-validation>
